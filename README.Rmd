@@ -1,0 +1,64 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# PiC: Pointcloud Interactive Computation <img src="man/figures/logo.png" align="right" height="139" />
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+## Overview
+
+PiC provides advanced algorithms for analyzing POINTCLOUD data in forestry applications.
+
+## Installation
+
+```{r eval=FALSE}
+# Install devtools if not already installed
+install.packages("devtools")
+
+# Install PiC
+devtools::install_github("author/PiC")
+```
+
+## Main Functions
+
+### Forest Segmentation
+```{r eval=FALSE}
+Forest_seg7(a, filename="output", dimVox = 2)
+```
+
+### Voxelization
+```{r eval=FALSE}
+Voxels(a, filename="output", dimVox = 2)
+```
+
+## Example
+
+```{r example, eval=FALSE}
+library(PiC)
+# Add example code here
+```
+
+## Documentation
+
+* [Getting Started with PiC](articles/pic-intro.html)
+* [Function Reference](reference/index.html)
+
+## Authors
+- Roberto Ferrara (roberto.ferrara@cnr.it)
+- Stefano Arrizza (stefano.arrizza@cnr.it)
+
+## License
+GPL (>= 3)
