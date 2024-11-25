@@ -18,7 +18,7 @@ forestry applications.
 install.packages("devtools")
 
 # Install PiC
-devtools::install_github("author/PiC")
+devtools::install_github("rupppy/PiC")
 ```
 
 ## Main Functions
