@@ -24,7 +24,7 @@ devtools::install_github("rupppy/PiC")
 Via GUI in zip or tar.gz
 
 ``` r
-# Installation with graphical user interface.
+# Installation with graphical user interface
 install.packages(file.choose(),repos = NULL, type = "source")
 # type = "win.binary" for .zip files on Windows
 
