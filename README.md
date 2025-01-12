@@ -26,13 +26,29 @@ devtools::install_github("rupppy/PiC")
 ### Forest Segmentation
 
 ``` r
-Forest_seg7(a, filename="output", dimVox = 2)
+Forest_seg(a, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, Soil_dim = 30, N = 500, R = 30, Vox_print = FALSE/TRUE, WoddVox_print = FALSE/TRUE)
+```
+### Single Tree Segmentation
+
+``` r
+SegOne(a, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6,  N = 500, R = 30)
 ```
 
 ### Voxelization
 
 ``` r
-Voxels(a, filename="output", dimVox = 2)
+Voxels(a, filename="output", dimVox = 2, th = 2)
+```
+
+### Soil separation
+
+``` r
+Floseg(a, filename="output", Soil_dim = 30, th = 20)
+```
+### Wood-leaf separation in AGB file without soil
+
+``` r
+Floseg(a, filename="output", Soil_dim = 30, th = 20)
 ```
 
 ## Example
