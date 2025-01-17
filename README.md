@@ -46,14 +46,14 @@ PiC's two main commands are 'Forest_seg', which applies to entire forest plots, 
 High-level function which performs all segmentation and clustering operations on forest plot point clouds.
 
 ``` r
-Forest_seg(filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, Soil_dim = 30, N = 500, R = 30, Vox_print = FALSE/TRUE, WoddVox_print = FALSE/TRUE)
+Forest_seg(inputfile, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, Soil_dim = 30, N = 500, R = 30, Vox_print = FALSE/TRUE, WoddVox_print = FALSE/TRUE)
 ```
 ### Single Tree Segmentation
 
 The function analyzes 3D clouds of individual trees by performing the entire segmentation process.
 
 ``` r
-SegOne(filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6,  N = 500, R = 30)
+SegOne(inputfile, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6,  N = 500, R = 30)
 ```
 
 ### Voxelization
@@ -61,7 +61,7 @@ SegOne(filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6,  N = 500, R = 3
 The function performs the voxelization of a point cloud.
 
 ``` r
-Voxels(filename="output", dimVox = 2, th = 2)
+Voxels(inputfile, filename="output", dimVox = 2, th = 2)
 ```
 
 ### Soil separation
@@ -69,22 +69,40 @@ Voxels(filename="output", dimVox = 2, th = 2)
 The function analyzes a voxel point cloud and allows to identify and separate the forest floor from the rest of the overlying vegetation (AGB). 
 
 ``` r
-Floseg(filename="output", Soil_dim = 30, th = 20)
+Floseg(inputfile, filename="output", Soil_dim = 30, th = 20)
 ```
 ### Wood-leaf separation in AGB file without soil
 
 Applied to a point cloud (txt or xyz) representing the AboveGroundBiomass of a forest formation without the ground layer, performs clustering of points and identification/separation of woody clusters from non-woody components.
 
 ``` r
-Wood_seg(filename="output", Soil_dim = 30, th = 20)
+Wood_seg(inputfile, filename="output", Soil_dim = 30, th = 20)
 ```
 
 ## Example
-
+Suppose we want to perform segmentation on a point cloud representing a forest plot. The file is named "ForestPlot_example".
+- Let's import the file into the working environment
+- Let's run the "Forest_seg" command.
 ``` r
 library(PiC)
-# Add example code here
+
+ForestPlot_example <- read.table("path/ForestPlot_example.xyz", quote="\"", comment.char="")
+
+Forest_seg(ForestPlot_example, filename="ForestPlot output name", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, Soil_dim = 30, N = 500, R = 30, Vox_print = FALSE/TRUE, WoddVox_print = FALSE/TRUE)
+
 ```
+
+If we do not indicate the value of the parameters, by default they will be set to:
+dimVox = 2
+th = 2 
+eps = 1 
+mpts = 4 
+h_tree = 1 
+Soil_dim = 30 
+N = 1000, 
+R = 30, 
+Vox_print = FALSE, 
+WoddVox_print = TRUE
 
 ## Documentation
 
