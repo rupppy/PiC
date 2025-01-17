@@ -93,16 +93,7 @@ Forest_seg(ForestPlot_example, filename="ForestPlot output name", dimVox = 2, th
 ```
 
 If we do not indicate the value of the parameters, by default they will be set to:
-dimVox = 2
-th = 2 
-eps = 1 
-mpts = 4 
-h_tree = 1 
-Soil_dim = 30 
-N = 1000, 
-R = 30, 
-Vox_print = FALSE, 
-WoddVox_print = TRUE
+dimVox = 2, th = 2, eps = 1, mpts = 4, h_tree = 1, Soil_dim = 30, N = 1000, R = 30, Vox_print = FALSE, WoddVox_print = TRUE)
 
 ## Documentation
 
