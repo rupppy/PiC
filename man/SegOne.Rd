@@ -5,7 +5,7 @@
 \title{Single Tree wood leaf segmentation}
 \usage{
 SegOne(a, filename = "Elab_single_tree", dimVox = 2, th = 2, 
-eps = 2, mpts = 10, N = 1000, R = 30)
+eps = 1, mpts = 4, N = 1000, R = 30)
 }
 \arguments{
 \item{dimVox}{- voxel dimension in cm - Default = 2}

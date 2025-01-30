@@ -13,52 +13,139 @@ knitr::opts_chunk$set(
 )
 ```
 
-# PiC: Pointcloud Interactive Computation <img src="man/figures/logo.png" align="right" height="139" />
+# PiC Documentation
 
-<!-- badges: start -->
-<!-- badges: end -->
+Version 1.0.0
 
-## Overview
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Installation](#installation)
+3. [Core Functions](#core-functions)
+4. [Workflows](#workflows)
+5. [Advanced Topics](#advanced-topics) 
+6. [Troubleshooting](#troubleshooting)
 
-PiC provides advanced algorithms for analyzing POINTCLOUD data in forestry applications.
+## Introduction
+PiC (Point Cloud Interactive Computation) is an R package specialized in point cloud analysis for forestry applications. The package provides comprehensive tools for analyzing forest structure and individual trees through point cloud data.
+
+### Key Features
+- Point cloud voxelization
+- Forest floor extraction
+- Forest components segmentation (wood, above-ground biomass)
+- Individual tree segmentation 
+- Wood segmentation from voxelized data
+
+### Data Format Requirements
+Input data must be organized as a matrix or data frame with at least 3 columns:
+- x: X coordinate
+- y: Y coordinate
+- z: Z coordinate
 
 ## Installation
 
-```{r eval=FALSE}
-# Install devtools if not already installed
-install.packages("devtools")
-
-# Install PiC
+### Install development version from GitHub
 devtools::install_github("rupppy/PiC")
-```
 
-## Main Functions
 
-### Forest Segmentation
-```{r eval=FALSE}
-Forest_seg7(a, filename="output", dimVox = 2)
-```
+## Core Functions
 
-### Voxelization
-```{r eval=FALSE}
-Voxels(a, filename="output", dimVox = 2)
-```
+1. Forest_seg()
 
-## Example
+Forest_seg(inputfile, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, soil_dim = 0.30, N = 500, R = 30)
+Segments the point cloud into three main components:
+Forest floor
+Wood components
+Above Ground Biomass (AGB) excluding wood
 
-```{r example, eval=FALSE}
-library(PiC)
-# Add example code here
-```
+Parameters:
+a: matrix or data frame with coordinates (x,y,z)
+filename: output file name
+dimVox: voxel size for segmentation
+th - Minimum number of point to generate a voxel. Default = 2
+eps - size (radius) of the epsilon neighborhood - Default = 1
+mpts - number of minimum points required in the eps neighborhood for core points (including the point itself) - Default = 4
+h_tree - minumum trunk lenght (m) - Default = 1
+soil_dim - Voxel dimension (m) for forest floor segmentation - Default = 0.30
+N - Minimum number of voxel in a wood cluster - Default = 1000
+R = Standard deviation * Proportion of Variance - Default = 30
 
-## Documentation
 
-* [Getting Started with PiC](articles/pic-intro.html)
-* [Function Reference](reference/index.html)
+2. SegOne()
 
-## Authors
-- Roberto Ferrara (roberto.ferrara@cnr.it)
-- Stefano Arrizza (stefano.arrizza@cnr.it)
+SegOne(a, filename = "output", dimVox = 1, th = 2, eps = 1, mpts = 4)
+Segments and analyzes individual trees from the point cloud.
 
-## License
-GPL (>= 3)
+Parameters:
+a: matrix or data frame with coordinates (x,y,z) of a single tree
+filename: output file name
+dimVox: voxel size for tree segmentation
+th - Minimum number of point to generate a voxel. Default = 2
+eps - size (radius) of the epsilon neighborhood - Default = 1
+mpts - number of minimum points required in the eps neighborhood for core points (including the point itself) - Default = 4
+
+
+3. Voxels()
+
+Voxels(a, filename = "output", dimVox = 2)
+Converts the point cloud into a voxelized representation, creating a 3D grid where each voxel represents a portion of the space containing points.
+
+Parameters:
+a: matrix or data frame with coordinates (x,y,z)
+filename: output file name
+dimVox: voxel size
+
+4. Floseg()
+
+Floseg(a, filename = "output", soil_dim = 0.30)
+Extracts the forest floor from the point cloud, identifying ground points and creating a digital terrain model.
+
+Parameters:
+a: matrix or data frame with coordinates (x,y,z)
+filename: output file name
+soil_dim: voxel size for ground detection
+
+
+5. Woodseg()
+
+Woodseg(a, filename = "output", dimVox = 2)
+Segments wooden components from a pre-voxelized point cloud with the forest floor removed.
+
+Parameters:
+a: voxelized point cloud without forest floor
+filename: output file name
+dimVox: voxel size used in previous voxelization
+
+
+
+
+## Advanced Topics
+
+Parameter Optimization
+Voxel Size Selection:
+Smaller voxels (0.02-0.03m): detailed tree structure
+Medium voxels (0.03-0.05m): general forest structure
+Larger voxels (>0.05m): coarse analysis, better performance
+
+Memory Management
+Pre-process large datasets in chunks
+Use appropriate data structures
+Clean workspace regularly
+
+Integration Tips
+Visualization: compatible with rgl package
+Data export: supports common formats
+Statistical analysis: integrates with R statistical packages
+
+Troubleshooting
+Common Issues and Solutions
+
+
+Performance Tips
+
+Optimize voxel size for your specific use case
+Use appropriate hardware for large datasets
+Consider parallel processing for batch operations
+
+Support
+For issues and feature requests, please use the GitHub issue tracker:
+https://github.com/rupppy/PiC/issues

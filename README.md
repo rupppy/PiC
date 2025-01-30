@@ -1,110 +1,122 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# PiC: Pointcloud Interactive Computation <img src="man/figures/logo.png" align="right" height="139" />
+# PiC Documentation
 
-<!-- badges: start -->
-<!-- badges: end -->
+Version 1.0.0
 
-## Overview
+## Table of Contents
 
-PiC provides advanced algorithms for analysing and segmenting 3D point clouds obtained from terrestrial LiDAR systems in forest contexts, both at the individual tree and plot level.
+1.  [Introduction](#introduction)
+2.  [Installation](#installation)
+3.  [Core Functions](#core-functions)
+4.  [Workflows](#workflows)
+5.  [Advanced Topics](#advanced-topics)
+6.  [Troubleshooting](#troubleshooting)
+
+## Introduction
+
+PiC (Point Cloud Interactive Computation) is an R package specialized in
+point cloud analysis for forestry applications. The package provides
+comprehensive tools for analyzing forest structure and individual trees
+through point cloud data.
+
+### Key Features
+
+- Point cloud voxelization
+- Forest floor extraction
+- Forest components segmentation (wood, above-ground biomass)
+- Individual tree segmentation
+- Wood segmentation from voxelized data
+
+### Data Format Requirements
+
+Input data must be organized as a matrix or data frame with at least 3
+columns: - x: X coordinate - y: Y coordinate - z: Z coordinate
 
 ## Installation
 
-From Github
+### Install development version from GitHub
 
-``` r
-# Install devtools if not already installed
-install.packages("devtools")
+devtools::install_github(“rupppy/PiC”)
 
-# Install PiC
-devtools::install_github("rupppy/PiC")
-```
-Via GUI in zip or tar.gz
+## Core Functions
 
-``` r
-# Installation with graphical user interface
-install.packages(file.choose(),repos = NULL, type = "source")
-# type = "win.binary" for .zip files on Windows
+1.  Forest_seg()
 
-# Installation of the file .zip (Windows)
-install.packages("C:/path/PiC..zip", repos = NULL, 
-type = "win.binary")
+Forest_seg(inputfile, filename=“output”, dimVox = 2, th = 2, eps = 2,
+mpts = 6, h_tree = 1, soil_dim = 0.30, N = 500, R = 30) Segments the
+point cloud into three main components: Forest floor Wood components
+Above Ground Biomass (AGB) excluding wood
 
-# Installation of the file .tar.gz (Unix/Linux or source packages)
-install.packages("C:/path/PiC.tar.gz",repos = NULL, type = "source")
-```
+Parameters: a: matrix or data frame with coordinates (x,y,z) filename:
+output file name dimVox: voxel size for segmentation th - Minimum number
+of point to generate a voxel. Default = 2 eps - size (radius) of the
+epsilon neighborhood - Default = 1 mpts - number of minimum points
+required in the eps neighborhood for core points (including the point
+itself) - Default = 4 h_tree - minumum trunk lenght (m) - Default = 1
+soil_dim - Voxel dimension (m) for forest floor segmentation - Default =
+0.30 N - Minimum number of voxel in a wood cluster - Default = 1000 R =
+Standard deviation \* Proportion of Variance - Default = 30
 
+2.  SegOne()
 
-## Main Functions
+SegOne(a, filename = “output”, dimVox = 1, th = 2, eps = 1, mpts = 4)
+Segments and analyzes individual trees from the point cloud.
 
-PiC's two main commands are 'Forest_seg', which applies to entire forest plots, and 'SegOne', which performs the same operations on the 3D cloud of a single tree. Other commands (Voxels, Floseg, Wood_seg) allow to perform the individual steps of voxelization, forest soil identification and separation from above ground biomass (AGB), and tree group identification.
+Parameters: a: matrix or data frame with coordinates (x,y,z) of a single
+tree filename: output file name dimVox: voxel size for tree segmentation
+th - Minimum number of point to generate a voxel. Default = 2 eps - size
+(radius) of the epsilon neighborhood - Default = 1 mpts - number of
+minimum points required in the eps neighborhood for core points
+(including the point itself) - Default = 4
 
-### Forest Segmentation
+3.  Voxels()
 
-High-level function which performs all segmentation and clustering operations on forest plot point clouds.
+Voxels(a, filename = “output”, dimVox = 2) Converts the point cloud into
+a voxelized representation, creating a 3D grid where each voxel
+represents a portion of the space containing points.
 
-``` r
-Forest_seg(inputfile, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, Soil_dim = 30, N = 500, R = 30, Vox_print = FALSE/TRUE, WoddVox_print = FALSE/TRUE)
-```
-### Single Tree Segmentation
+Parameters: a: matrix or data frame with coordinates (x,y,z) filename:
+output file name dimVox: voxel size
 
-The function analyzes 3D clouds of individual trees by performing the entire segmentation process.
+4.  Floseg()
 
-``` r
-SegOne(inputfile, filename="output", dimVox = 2, th = 2, eps = 2, mpts = 6,  N = 500, R = 30)
-```
+Floseg(a, filename = “output”, soil_dim = 0.30) Extracts the forest
+floor from the point cloud, identifying ground points and creating a
+digital terrain model.
 
-### Voxelization
+Parameters: a: matrix or data frame with coordinates (x,y,z) filename:
+output file name soil_dim: voxel size for ground detection
 
-The function performs the voxelization of a point cloud.
+5.  Woodseg()
 
-``` r
-Voxels(inputfile, filename="output", dimVox = 2, th = 2)
-```
+Woodseg(a, filename = “output”, dimVox = 2) Segments wooden components
+from a pre-voxelized point cloud with the forest floor removed.
 
-### Soil separation
+Parameters: a: voxelized point cloud without forest floor filename:
+output file name dimVox: voxel size used in previous voxelization
 
-The function analyzes a voxel point cloud and allows to identify and separate the forest floor from the rest of the overlying vegetation (AGB). 
+## Advanced Topics
 
-``` r
-Floseg(inputfile, filename="output", Soil_dim = 30, th = 20)
-```
-### Wood-leaf separation in AGB file without soil
+Parameter Optimization Voxel Size Selection: Smaller voxels
+(0.02-0.03m): detailed tree structure Medium voxels (0.03-0.05m):
+general forest structure Larger voxels (\>0.05m): coarse analysis,
+better performance
 
-Applied to a point cloud (txt or xyz) representing the AboveGroundBiomass of a forest formation without the ground layer, performs clustering of points and identification/separation of woody clusters from non-woody components.
+Memory Management Pre-process large datasets in chunks Use appropriate
+data structures Clean workspace regularly
 
-``` r
-Wood_seg(inputfile, filename="output", Soil_dim = 30, th = 20)
-```
+Integration Tips Visualization: compatible with rgl package Data export:
+supports common formats Statistical analysis: integrates with R
+statistical packages
 
-## Example
-Suppose we want to perform segmentation on a point cloud representing a forest plot. The file is named "ForestPlot_example".
-- Let's import the file into the working environment
-- Let's run the "Forest_seg" command.
-``` r
-library(PiC)
+Troubleshooting Common Issues and Solutions
 
-ForestPlot_example <- read.table("path/ForestPlot_example.xyz", quote="\"", comment.char="")
+Performance Tips
 
-Forest_seg(ForestPlot_example, filename="ForestPlot output name", dimVox = 2, th = 2, eps = 2, mpts = 6, h_tree = 1, Soil_dim = 30, N = 500, R = 30, Vox_print = FALSE/TRUE, WoddVox_print = FALSE/TRUE)
+Optimize voxel size for your specific use case Use appropriate hardware
+for large datasets Consider parallel processing for batch operations
 
-```
-
-If we do not indicate the value of the parameters, by default they will be set to:
-dimVox = 2, th = 2, eps = 1, mpts = 4, h_tree = 1, Soil_dim = 30, N = 1000, R = 30, Vox_print = FALSE, WoddVox_print = TRUE)
-
-## Documentation
-
-- [Getting Started with PiC](articles/pic-intro.html)
-- [Function Reference](reference/index.html)
-
-## Authors
-
-- Roberto Ferrara (<roberto.ferrara@cnr.it>)
-- Stefano Arrizza (<stefano.arrizza@cnr.it>)
-
-## License
-
-GPL (\>= 3)
+Support For issues and feature requests, please use the GitHub issue
+tracker: <https://github.com/rupppy/PiC/issues>
