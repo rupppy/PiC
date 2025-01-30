@@ -1,6 +1,7 @@
 #' Voxelize point cloud
 #' @name Voxels
 #' @description Transform pointcloud in voxel
+#' @usage Voxels(a, filename = "XXX", dimVox = 2, th = 2)
 #' @param a - input file
 #' @param filename - file output prefix
 #' @param dimVox - voxel dimension in cm - Default = 2

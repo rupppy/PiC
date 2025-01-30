@@ -4,11 +4,11 @@
 #'
 #' @description Segments the input .xyz pointcloud file into different forestry layers: forest floor and above ground biomass.
 #'
-#' @usage Floseg(a, filename="XXX", Soil_dim = 30, th = 20, N=500)
+#' @usage Floseg(a, filename="XXX", soil_dim = 0.3, th = 20, N=500)
 #'
 #' @param a - Input file (.xyz)
 #' @param filename - Output file prefix
-#' @param Soil_dim - Voxel dimension (cm) for forest floor segmentation - Default = 30
+#' @param soil_dim - Voxel dimension (m) for forest floor segmentation - Default = 0.30
 #' @param th - Minimum number of point to generate a voxel. Default = 20
 #' @param N - Minimum number of voxel to generate a cluster. Default = 500
 
@@ -27,22 +27,22 @@
 
 utils::globalVariables(c("u", "v", "w", "cls"))
 
-Floseg <- function(a, filename="XXX", Soil_dim = 30, th = 20, N = 500) {
+Floseg <- function(a, filename="XXX", soil_dim = 0.3, th = 20, N = 500) {
   ########
 
 #sink("Execution time.txt")
 #{
 tic('Forest Floor segmentation')
-dim <- Soil_dim/100
+
 
 
 #input_file<- nuvola di punti
 
 colnames(a)<-c('x', 'y', 'z')
 
-# voxelizzo, tabella di corrispomdenza punto/voxel con passo dim, un record per ciascun punto
+# voxelizzo, tabella di corrispondenza punto/voxel con passo dim, un record per ciascun punto
 tic('AAVox')
-AAvox <- data.frame(a$x, a$y, a$z, as.integer(a$x / dim) + 1, as.integer(a$y / dim) + 1, as.integer(a$z / dim) + 1)
+AAvox <- data.frame(a$x, a$y, a$z, as.integer(a$x / soil_dim) + 1, as.integer(a$y / soil_dim) + 1, as.integer(a$z / soil_dim) + 1)
 colnames(AAvox) <- c('x', 'y', 'z', 'u', 'v', 'w')
 toc()
 
@@ -73,7 +73,7 @@ p1<-data.frame(p0['u'], p0['v'], p0['w'], p0['w']-p0['wmin'])
 colnames(p1) <- c('u', 'v', 'w', 'w0')
 toc()
 
-# separo i primi dim cm di strato basale, considerato come forest floor, dal resto della nuvola considerata AGB
+# separo i primi dim m di strato basale, considerato come forest floor, dal resto della nuvola considerata AGB
 tic('Forest_floor0')
 Forest_floor0<-p1[p1['w0'] <= 1,]
 toc()

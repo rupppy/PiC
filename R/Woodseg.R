@@ -1,9 +1,10 @@
 #' Wood voxels segmentation
 #'
 #'
-#' @name Wood_seg
+#' @name Woodseg
 #'
 #' @description Point cloud segmentation to identify wood voxels
+#' @usage Woodseg(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30)
 #' @param filename - Output file prefix
 #' @param a - AGB voxelized input file
 #' @param eps - size (radius) of the epsilon neighborhood - Default = 1
@@ -27,7 +28,7 @@
 
 utils::globalVariables(c("u", "v", "w", "cls"))
 
-Wood_seg <- function(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30) {
+Woodseg <- function(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30) {
 
   tic('Wood segmentation time')
   ###############
