@@ -92,7 +92,7 @@ test_that("Forest_seg7 with realistic forest scene", {
 
   # Test della funzione
   expect_no_error(
-    Forest_seg7(
+    Forest_seg(
       forest_data,
       filename = "test_forest",
       dimVox = 3,

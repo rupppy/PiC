@@ -21,7 +21,6 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr inner_join anti_join semi_join
 #' @importFrom foreach foreach %dopar%  %do%
-#' @importFrom doParallel registerDoParallel
 #' @importFrom collapse fcount na_omit
 #' @importFrom stats prcomp
 #' @importFrom utils read.csv

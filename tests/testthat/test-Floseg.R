@@ -58,7 +58,7 @@ defer({
   unlink(files_to_remove)
 })
 
-test_that("Forest_floor3 funziona correttamente con dati forestali", {
+test_that("Floseg funziona correttamente con dati forestali", {
   # Dimensioni della scena
   x_range <- c(0, 10)
   y_range <- c(0, 10)
@@ -121,7 +121,7 @@ test_that("Forest_floor3 funziona correttamente con dati forestali", {
 
   # Parametri Floseg modificati
   result <- Floseg(forest_data, "test_forest",
-                   Soil_dim = 30,  # Valore più piccolo per maggiore dettaglio
+                   soil_dim = 0.3,  # Valore più piccolo per maggiore dettaglio
                    th = 5,        # Soglia più bassa
                    N = 5)           # Numero minimo di punti molto basso
 

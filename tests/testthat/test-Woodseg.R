@@ -86,7 +86,7 @@ test_that("Wood_seg funziona correttamente con dati forestali", {
 
   # Test della funzione
   expect_no_error(
-    Wood_seg(
+    Woodseg(
       forest_data_vox,
       filename = "test_wood",
       eps = 2,
