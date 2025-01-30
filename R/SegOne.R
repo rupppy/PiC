@@ -1,6 +1,8 @@
 #' @name SegOne
 #' @title Single Tree wood leaf segmentation
 #' @description Wood - leaf segmentation of single tree
+#' @usage SegOne(a, filename = "Elab_single_tree", dimVox = 2, th = 2, 
+#' eps = 2, mpts = 10, N = 1000, R = 30)
 #' @param a - input file
 #' @param filename - file output prefix
 #' @param dimVox - voxel dimension in cm - Default = 2

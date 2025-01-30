@@ -1,10 +1,10 @@
 #' Whole pointcloud segmentation process
-#' @name Forest_seg7
+#' @name Forest_seg
 #' @title Forest component segmentation
 #'
 #' @description Segments the input .xyz pointcloud file into different forestry layers.
-#' @usage Forest_seg7 (a, filename="XXX", dimVox = 2, th = 2,
-#' eps = 2, mpts = 6, h_tree = 1, Soil_dim= 0.3,
+#' @usage Forest_seg (a, filename="XXX", dimVox = 2, th = 2,
+#' eps = 2, mpts = 6, h_tree = 1, soil_dim= 0.3,
 #' N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE)
 #'
 #' @param a - Input file (.xyz)
@@ -14,7 +14,7 @@
 #' @param eps - size (radius) of the epsilon neighborhood - Default = 1
 #' @param mpts - number of minimum points required in the eps neighborhood for core points (including the point itself) - Default = 4
 #' @param h_tree - minumum trunk lenght (m)
-#' @param Soil_dim - Voxel dimension (cm) for forest floor segmentation - Default = 30
+#' @param soil_dim - Voxel dimension (m) for forest floor segmentation - Default = 0.30
 #' @param N - Minimum number of voxel in a wood cluster - Default = 1000
 #' @param R - R = Standard deviation * Proportion of Variance - Default = 30
 #' @param Vox_print - Print point cloud voxelization. Default FALSE
@@ -39,8 +39,8 @@
 utils::globalVariables(c("u", "v", "w", "cls"))
 
 
-Forest_seg7 <- function(a, filename="XXX", dimVox = 2, th = 2,
-                        eps = 2, mpts = 6, h_tree = 1, Soil_dim= 0.3,
+Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
+                        eps = 2, mpts = 6, h_tree = 1, soil_dim= 0.3,
                         N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE) {
   ########
 
@@ -49,13 +49,12 @@ Forest_seg7 <- function(a, filename="XXX", dimVox = 2, th = 2,
   ###########
 
   tic('Forest Floor segmentation')
-  dim <- Soil_dim
 
   colnames(a)<-c('x', 'y', 'z')
 
   # voxelizzo, tabella di corrispomdenza punto/voxel con passo dim, un record per ciascun punto
   tic('AAVox')
-  AAvox <- data.frame(a$x, a$y, a$z, as.integer(a$x / dim) + 1, as.integer(a$y / dim) + 1, as.integer(a$z / dim) + 1)
+  AAvox <- data.frame(a$x, a$y, a$z, as.integer(a$x / soil_dim) + 1, as.integer(a$y / soil_dim) + 1, as.integer(a$z / soil_dim) + 1)
   colnames(AAvox) <- c('x', 'y', 'z', 'u', 'v', 'w')
   toc()
 
@@ -86,7 +85,7 @@ Forest_seg7 <- function(a, filename="XXX", dimVox = 2, th = 2,
   colnames(p1) <- c('u', 'v', 'w', 'w0')
   toc()
 
-  # separo i primi dim cm di strato basale, considerato come forest floor, dal resto della nuvola considerata AGB
+  # separo i primi soil_dim m di strato basale, considerato come forest floor, dal resto della nuvola considerata AGB
   tic('Forest_floor0')
   Forest_floor0<-p1[p1['w0'] <= 1,]
   toc()
