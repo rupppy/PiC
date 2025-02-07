@@ -44,6 +44,10 @@ defer({
 
 # Genera dataset di test
 test_that("Wood_seg funziona correttamente con dati forestali", {
+  
+  # Specifica una directory temporanea
+  temp_path <- withr::local_tempdir()
+  
   # Dimensioni della scena
   x_range <- c(0, 20)
   y_range <- c(0, 20)
@@ -92,16 +96,21 @@ test_that("Wood_seg funziona correttamente con dati forestali", {
       eps = 2,
       mpts = 6,
       N = 500,
-      R = 30
+      R = 30,
+      output_path = temp_path
     )
   )
 
-  # Verifica output
-  wood_out <- fread("test_wood_WoodVox_eps2_mpts6.txt")
-
-  # Test sui risultati
-  expect_true(nrow(wood_out) > 0, "Nessun punto identificato come legno")
-  expect_true(max(wood_out$z) > 5, "Altezza massima del legno troppo bassa")
-  expect_true(all(colnames(wood_out) == c("x", "y", "z", "cls", "r", "pop_cls")),
-              "Colonne output non corrette")
+  # Verifica l'esistenza del file di output
+  output_file <- file.path(temp_path, "test_wood_WoodVox_eps2_mpts6.txt")
+  expect_true(file.exists(output_file), "File di output non trovato.")
+  
+  # Verifica il contenuto del file di output
+  wood_out <- fread(output_file)
+  
+  expect_true(nrow(wood_out) > 0, "Nessun punto identificato come legno.")
+  expect_true(all(colnames(wood_out) == c("u", "v", "w", "cls", "r", "pop_cls")),
+              "Colonne nel file di output non corrette.")
+  expect_true(max(wood_out$w) > 5, "L'altezza massima del legno è insufficiente.")
+  
 })

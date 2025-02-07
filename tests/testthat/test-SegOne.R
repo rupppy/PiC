@@ -50,18 +50,23 @@ generate_forest_floor <- function(x_range, y_range, resolution = 0.1, roughness 
   floor_points
 }
 
-# Crea il test fixture
-defer({
-  files_to_remove <- list.files(pattern = "test_forest", full.names = TRUE)
-  unlink(files_to_remove)
-})
 
 # Genera dataset di test
 test_that("Forest_seg7 with realistic forest scene", {
+  
+  # Percorso temporaneo
+  temp_path <- file.path(tempdir(), "test_SegOne")
+  
+  # Crea la directory temporanea
+  if (!dir.exists(temp_path)) {
+    dir.create(temp_path, recursive = TRUE)
+  }
+  
   # Dimensioni della scena
   x_range <- c(0, 20)
   y_range <- c(0, 20)
 
+  
   # Genera forest floor
   floor <- generate_forest_floor(x_range, y_range)
 
@@ -100,17 +105,22 @@ test_that("Forest_seg7 with realistic forest scene", {
       eps = 2,
       mpts = 6,
       N = 200,
-      R = 30)
+      R = 30,
+      output_path = temp_path)
     )
 
-
-  # Verifica output
-  leaf <- fread("Elab_single_tree_DBSCAN_leaf.txt")
-  wood <- fread("Elab_single_tree_DBSCAN_wood.txt")
-
-  # Test sulla segmentazione
-  expect_true(nrow(wood) > 500)  # dovrebbe trovare abbastanza punti del tronco
-  expect_true(nrow(leaf) > 400)  # dovrebbe trovare abbastanza punti del chioma
-  expect_true(max(wood$z) > 3)  # dovrebbe trovare tronchi alti almeno 3m
-})
+  # Verifica l'esistenza dei file di output
+  wood_file <- file.path(temp_path, "Elab_single_tree_DBSCAN_wood.txt")
+  leaf_file <- file.path(temp_path, "Elab_single_tree_DBSCAN_leaf.txt")
+  
+  expect_true(file.exists(wood_file), "File di legno non trovato.")
+  expect_true(file.exists(leaf_file), "File di foglie non trovato.")
+  
+  # Verifica contenuto dei file
+  wood <- fread(wood_file)
+  leaf <- fread(leaf_file)
+  
+  expect_true(nrow(wood) > 500, "Numero insufficiente di punti del tronco.")
+  expect_true(nrow(leaf) > 400, "Numero insufficiente di punti della chioma.")
+  expect_true(max(wood$z) > 3, "Il tronco dovrebbe essere alto almeno 3m.")})
 

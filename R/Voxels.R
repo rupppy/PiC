@@ -1,7 +1,7 @@
 #' Voxelize point cloud
 #' @name Voxels
 #' @description Transform pointcloud in voxel
-#' @usage Voxels(a, filename = "XXX", dimVox = 2, th = 2)
+#' @usage Voxels(a, filename = "XXX", dimVox = 2, th = 2, output_path = tempdir())
 #' @param a - input file
 #' @param filename - file output prefix
 #' @param dimVox - voxel dimension in cm - Default = 2
@@ -14,7 +14,8 @@
 #' it generates a lightened cloud with fewer points.
 #' To be evaluated in relation with the dimVox parameter,
 #' for high point densities it is efficae to remove noise (outliers)
-#'
+#' @param output_path Directory in cui scrivere i file di output. Default = tempdir()
+
 #' @importFrom tictoc tic toc
 #' @importFrom data.table fwrite fread data.table setDT setkey
 #' @importFrom magrittr %>%
@@ -26,7 +27,7 @@
 
 utils::globalVariables(c("u", "v", "w", "cls"))
 
-Voxels <- function(a, filename = "XXX", dimVox = 2, th = 2) {
+Voxels <- function(a, filename = "XXX", dimVox = 2, th = 2, output_path = tempdir()) {
 
   tic('Voxelizing time')
 
@@ -67,7 +68,7 @@ Voxels <- function(a, filename = "XXX", dimVox = 2, th = 2) {
 
   # crea una tabella di corrispondenza voxel/punto
   AAvoxRAW<-data.frame(CC$x,CC$y,CC$z, AAvox$u,AAvox$v,AAvox$w)
-  fwrite(AAvoxRAW, file = paste0(plot,'_vox_raw.txt'), row.names = FALSE)
+  fwrite(AAvoxRAW, file.path(output_path, paste0(plot,'_vox_raw.txt')), row.names = FALSE)
 
   # crea la nuvola di voxel, con valori univoci e quarta colonna col numero di punti per voxel
   AAvox1 <- data.frame(AAvox %>% fcount(u, v, w))
@@ -77,7 +78,7 @@ Voxels <- function(a, filename = "XXX", dimVox = 2, th = 2) {
   if(is.null(AAvoxels))
   { stop('No wood cluster generated, might deacrese th value')}
 
-  fwrite(AAvoxels, file = paste0(plot, "_vox.txt"), row.names = FALSE)
+  fwrite(AAvoxels, file.path(output_path, paste0(plot, "_vox.txt")), row.names = FALSE)
   toc()
 }
 

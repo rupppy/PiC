@@ -4,7 +4,7 @@
 \alias{Floseg}
 \title{Forest floor segmentation}
 \usage{
-Floseg(a, filename="XXX", soil_dim = 0.3, th = 20, N=500)
+Floseg(a, filename="XXX", soil_dim = 0.3, th = 20, N=500, output_path = tempdir())
 }
 \arguments{
 \item{a}{- Input file (.xyz)}
@@ -16,6 +16,8 @@ Floseg(a, filename="XXX", soil_dim = 0.3, th = 20, N=500)
 \item{th}{- Minimum number of point to generate a voxel. Default = 20}
 
 \item{N}{- Minimum number of voxel to generate a cluster. Default = 500}
+
+\item{output_path}{Directory in cui scrivere i file di output. Default = tempdir()}
 }
 \value{
 2 files (.txt) output. 1. Forest floor pointcolud; 2. AGB pointcloud

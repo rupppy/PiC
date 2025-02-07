@@ -6,7 +6,7 @@
 \usage{
 Forest_seg (a, filename="XXX", dimVox = 2, th = 2,
 eps = 2, mpts = 6, h_tree = 1, soil_dim= 0.3,
-N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE)
+N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE, output_path = tempdir())
 }
 \arguments{
 \item{a}{- Input file (.xyz)}
@@ -32,6 +32,8 @@ N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE)
 \item{Vox_print}{- Print point cloud voxelization. Default FALSE}
 
 \item{WoodVox_print}{- Print wood voxelization}
+
+\item{output_path}{Directory in cui scrivere i file di output. Default = tempdir()}
 }
 \value{
 6 files (.txt) output. 1. Voxelized pointcloud. 2. Forest floor (vox). 3. AGB (vox) 4. DTM. 5. Wood (vox) 6. AGB no wood

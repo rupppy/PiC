@@ -5,7 +5,7 @@
 \title{Single Tree wood leaf segmentation}
 \usage{
 SegOne(a, filename = "Elab_single_tree", dimVox = 2, th = 2, 
-eps = 1, mpts = 4, N = 1000, R = 30)
+eps = 1, mpts = 4, N = 1000, R = 30, output_path = tempdir())
 }
 \arguments{
 \item{dimVox}{- voxel dimension in cm - Default = 2}
@@ -23,6 +23,8 @@ eps = 1, mpts = 4, N = 1000, R = 30)
 \item{N}{- Minimum number of voxel in a wood cluster - Default = 1000}
 
 \item{R}{- R = Standard deviation * Proportion of Variance - Default = 30}
+
+\item{output_path}{Directory in cui scrivere i file di output. Default = tempdir()}
 }
 \value{
 Two file (.txt) in output - Wood points and non wood points

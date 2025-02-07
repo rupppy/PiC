@@ -4,13 +4,14 @@
 #' @name Woodseg
 #'
 #' @description Point cloud segmentation to identify wood voxels
-#' @usage Woodseg(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30)
+#' @usage Woodseg(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30, output_path = tempdir())
 #' @param filename - Output file prefix
 #' @param a - AGB voxelized input file
 #' @param eps - size (radius) of the epsilon neighborhood - Default = 1
 #' @param mpts - number of minimum points required in the eps neighborhood for core points (including the point itself) - Default = 4
 #' @param N - Minimum number of voxel in a wood cluster - Default = 1000
 #' @param R - R = Standard deviation * Proportion of Variance - Default = 30
+#' @param output_path Directory in cui scrivere i file di output. Default = tempdir()
 
 #' @return One file (.txt) output - Wood voxels (vox)
 
@@ -28,10 +29,17 @@
 
 utils::globalVariables(c("u", "v", "w", "cls"))
 
-Woodseg <- function(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30) {
+Woodseg <- function(a, filename = "XXX", eps = 1, mpts = 4, 
+                    N = 1000, R = 30, output_path = tempdir()) {
 
   tic('Wood segmentation time')
   ###############
+  
+  # Controlla se la directory esiste, altrimenti creala
+  if (!dir.exists(output_path)) {
+    dir.create(output_path, recursive = TRUE)
+  }
+  
   # Wood segmentation
   colnames(a) <- c("u", "v", "w")
   wood <- data.frame(a$u, a$v, a$w)
@@ -64,7 +72,15 @@ Woodseg <- function(a, filename = "XXX", eps = 1, mpts = 4, N = 1000, R = 30) {
       next
     }
     cluster <- data.frame(valCls["x"], valCls["y"], valCls["z"], valCls["cls"], r, pop_cls)
-    fwrite(cluster, file = paste0(filename, "_WoodVox_eps", eps, "_mpts", mpts, ".txt"), append = TRUE, row.names = FALSE)
-  }
+    colnames(cluster) <- c("u", "v", "w", "cls", "r", "pop_cls")
+    
+    
+    # Scrivi il file di output
+    output_file <- file.path(output_path, paste0(filename, "_WoodVox_eps", eps, "_mpts", mpts, ".txt"))
+    fwrite(cluster, output_file, append = TRUE, row.names = FALSE)
+    
+    # Messaggio di debug
+    cat("File scritto in:", output_file, "\n")
+    }
   toc()
 }

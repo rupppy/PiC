@@ -5,7 +5,7 @@
 #' @description Segments the input .xyz pointcloud file into different forestry layers.
 #' @usage Forest_seg (a, filename="XXX", dimVox = 2, th = 2,
 #' eps = 2, mpts = 6, h_tree = 1, soil_dim= 0.3,
-#' N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE)
+#' N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE, output_path = tempdir())
 #'
 #' @param a - Input file (.xyz)
 #' @param filename - Output file prefix
@@ -19,6 +19,7 @@
 #' @param R - R = Standard deviation * Proportion of Variance - Default = 30
 #' @param Vox_print - Print point cloud voxelization. Default FALSE
 #' @param WoodVox_print - Print wood voxelization
+#' @param output_path Directory in cui scrivere i file di output. Default = tempdir()
 #'
 #' @return 6 files (.txt) output. 1. Voxelized pointcloud. 2. Forest floor (vox). 3. AGB (vox) 4. DTM. 5. Wood (vox) 6. AGB no wood
 #'
@@ -41,12 +42,16 @@ utils::globalVariables(c("u", "v", "w", "cls"))
 
 Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
                         eps = 2, mpts = 6, h_tree = 1, soil_dim= 0.3,
-                        N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE) {
+                        N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE,
+                       output_path = tempdir()) {
   ########
 
   tic('Total time')
 
   ###########
+  if (!dir.exists(output_path)) {
+    dir.create(output_path, recursive = TRUE)
+  }
 
   tic('Forest Floor segmentation')
 
@@ -76,19 +81,15 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
 
   # porto in un piano w=0 tutte le colonne xy
   #a ciascuna coppia xy della tabella completa associo la w del voxel più basso della stessa coppia
-  tic('p0')
-  p0<-inner_join(AAvoxels, voxel_minimi)
-  toc()
 
-  tic('p1')
-  p1<-data.frame(p0['u'], p0['v'], p0['w'], p0['w']-p0['wmin'])
+  p0<-inner_join(AAvoxels, voxel_minimi)
+  p1 <- data.frame(p0['u'], p0['v'], p0['w'], p0['w'] - p0['wmin'])
   colnames(p1) <- c('u', 'v', 'w', 'w0')
-  toc()
 
   # separo i primi soil_dim m di strato basale, considerato come forest floor, dal resto della nuvola considerata AGB
-  tic('Forest_floor0')
-  Forest_floor0<-p1[p1['w0'] <= 1,]
-  toc()
+  Forest_floor0<-p1[p1['w0'] <= 1.05, ]
+  Forest_floor0 <- na.omit(Forest_floor0)  # Rimuovi eventuali valori NA
+  
 
   tic('dbscan')
   Forest_floor00<-data.frame(Forest_floor0$u, Forest_floor0$v, Forest_floor0$w)
@@ -108,8 +109,9 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   tic('Forest_foor')
   Forest_floor<-data.frame(Forest_floor1$x, Forest_floor1$y, Forest_floor1$z)
   colnames(Forest_floor)<-c('x','y','z')
-  fwrite(Forest_floor, file = paste0(filename,'_Forest_floor_eps', eps, '_mpts', mpts, '.txt'))
-
+  fwrite(Forest_floor, file.path(output_path, paste0(filename, '_Forest_floor_eps', eps, '_mpts', mpts, '.txt')))
+  
+  cat("File scritto in:", file.path(output_path, paste0(filename, '_Forest_floor_eps', eps, '_mpts', mpts, '.txt')), "\n")
   toc()
 
   tic('AGB0')
@@ -159,7 +161,9 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   AAvox2<-NULL
 
   if (Vox_print) {
-    fwrite(AAvoxels, file = paste0(plot, "_vox.txt"), row.names = FALSE)
+    fwrite(AAvoxels, file.path(output_path, paste0(plot, "_vox.txt")), row.names = FALSE)
+    
+    cat("File scritto in:", file.path(output_path, paste0(filename, '_vox.txt')), "\n")
   }
 
   toc()
@@ -214,13 +218,17 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
 
   colnames(cluster)<-c('u','v','w', 'cls', 'r', 'pop_cls')
   if(WoodVox_print) {
-    fwrite(cluster, file =paste0(plot,'_WoodVox_eps', eps, '_mpts', mpts, '.txt'))
+    fwrite(cluster, file.path(output_path, paste0(plot,'_WoodVox_eps', eps, '_mpts', mpts, '.txt')))
+    
+    cat("File scritto in:", file.path(output_path, paste0(filename, '_WoodVox_eps', eps, '_mpts', mpts, '.txt')), "\n")
   }
 
   woodpoint0<-inner_join(AAvox, cluster)
   woodpoint<-data.frame(woodpoint0['x'], woodpoint0['y'], woodpoint0['z'], woodpoint0['cls'])
   woodpoint0=NULL
-  fwrite(woodpoint, file = paste0(plot, "_Wood_eps", eps, "_mpts", mpts, ".txt"), row.names = FALSE)
+  fwrite(woodpoint, file.path(output_path, paste0(plot, "_Wood_eps", eps, "_mpts", mpts, ".txt")), row.names = FALSE)
+  
+  cat("File scritto in:", file.path(output_path, paste0(filename, "_Wood_eps", eps, "_mpts", mpts, ".txt")), "\n")
 
   toc()
   ###########
@@ -266,7 +274,9 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
 
   colnames(AGB_def)<-c('x','y','z')
 
-  fwrite(AGB_def, file = paste0(plot, "_AGBnoWOOD_eps", eps, "_mpts", mpts, ".txt"), row.names = FALSE)
+  fwrite(AGB_def, file.path(output_path, paste0(plot, "_AGBnoWOOD_eps", eps, "_mpts", mpts, ".txt")), row.names = FALSE)
+  
+  cat("File scritto in:", file.path(output_path, paste0(filename, "_AGBnoWOOD_eps", eps, "_mpts", mpts, ".txt")), "\n")
   toc()
 
   toc()

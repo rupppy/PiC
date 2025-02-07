@@ -4,7 +4,7 @@
 \alias{Voxels}
 \title{Voxelize point cloud}
 \usage{
-Voxels(a, filename = "XXX", dimVox = 2, th = 2)
+Voxels(a, filename = "XXX", dimVox = 2, th = 2, output_path = tempdir())
 }
 \arguments{
 \item{a}{- input file}
@@ -18,6 +18,8 @@ Is a parameter that should be used with caution;
 it generates a lightened cloud with fewer points.
 To be evaluated in relation with the dimVox parameter,
 for high point densities it is efficae to remove noise (outliers)}
+
+\item{output_path}{Directory in cui scrivere i file di output. Default = tempdir()}
 }
 \value{
 Voxelized pointcloud

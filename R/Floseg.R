@@ -4,13 +4,14 @@
 #'
 #' @description Segments the input .xyz pointcloud file into different forestry layers: forest floor and above ground biomass.
 #'
-#' @usage Floseg(a, filename="XXX", soil_dim = 0.3, th = 20, N=500)
+#' @usage Floseg(a, filename="XXX", soil_dim = 0.3, th = 20, N=500, output_path = tempdir())
 #'
 #' @param a - Input file (.xyz)
 #' @param filename - Output file prefix
 #' @param soil_dim - Voxel dimension (m) for forest floor segmentation - Default = 0.30
 #' @param th - Minimum number of point to generate a voxel. Default = 20
 #' @param N - Minimum number of voxel to generate a cluster. Default = 500
+#' @param output_path Directory in cui scrivere i file di output. Default = tempdir()
 
 #' @return 2 files (.txt) output. 1. Forest floor pointcolud; 2. AGB pointcloud
 
@@ -27,13 +28,16 @@
 
 utils::globalVariables(c("u", "v", "w", "cls"))
 
-Floseg <- function(a, filename="XXX", soil_dim = 0.3, th = 20, N = 500) {
-  ########
+Floseg <- function(a, filename="XXX", soil_dim = 0.3, th = 20, N = 500, output_path = tempdir()) {
 
-#sink("Execution time.txt")
-#{
 tic('Forest Floor segmentation')
 
+ ## Controlla se la directory esiste
+  if (!dir.exists(output_path)) {
+    dir.create(output_path, recursive = TRUE)
+  }
+
+  
 
 
 #input_file<- nuvola di punti
@@ -107,8 +111,15 @@ AGB<-data.frame(AGB2$x, AGB2$y, AGB2$z)
 toc()
 
 tic('write')
-fwrite(Forest_floor, file = paste0(filename,'_Forest_floor.txt'))
-fwrite(AGB, file = paste0(filename,'_AGB.txt'))
+#fwrite(Forest_floor, file.path(tempdir(), file = paste0(filename,'_Forest_floor.txt')))
+#fwrite(AGB, file.path(tempdir(), file = paste0(filename,'_AGB.txt')))
+
+# Scrivi i file nella directory specificata
+fwrite(Forest_floor, file.path(output_path, 'Forest_floor.txt'))
+fwrite(AGB, file.path(output_path, 'AGB.txt'))
+
+cat("File Forest_floor scritto in:", file.path(output_path, 'Forest_floor.txt'), "\n")
+cat("File AGB scritto in:", file.path(output_path, 'AGB.txt'), "\n")
 toc()
 
 toc()

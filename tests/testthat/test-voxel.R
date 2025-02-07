@@ -52,21 +52,15 @@ generate_test_data <- function() {
   return(all_points)
 }
 
-# Crea il test fixture
-withr::defer({
-  files_to_remove <- list.files(pattern = "test_forest", full.names = TRUE)
-  unlink(files_to_remove)
-})
 
 # Test per Voxels
 test_that("Voxels funziona correttamente con dati forestali", {
   # Genera dati di test
   test_data <- generate_test_data()
 
-  # Salva i dati in un file temporaneo
-  temp_file <- tempfile(fileext = ".txt")
-  fwrite(test_data, temp_file)
-
+  # Specifica la directory temporanea
+  temp_path <- withr::local_tempdir()
+  
   # Test con diversi parametri
   test_cases <- list(
     list(dimVox = 2, th = 1),   # caso base
@@ -79,22 +73,25 @@ test_that("Voxels funziona correttamente con dati forestali", {
     voxel_result <- Voxels(test_data,
                            filename = "test_voxels",
                            dimVox = case$dimVox,
-                           th = case$th)
+                           th = case$th,
+                           output_path = temp_path)
 
     # Verifica l'esistenza dei file di output
-    expect_true(file.exists(paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox.txt")))
-    expect_true(file.exists(paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox_raw.txt")))
-
+    voxel_file <- file.path(temp_path, paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox.txt"))
+    voxel_raw_file <- file.path(temp_path, paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox_raw.txt"))
+    
+    expect_true(file.exists(voxel_file), paste("File voxel non trovato:", voxel_file))
+    expect_true(file.exists(voxel_raw_file), paste("File voxel RAW non trovato:", voxel_raw_file))
+    
     # Leggi il file di output
-    voxel_output <- fread(paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox.txt"))
-
+    voxel_output <- fread(voxel_file)
+    
     # Verifiche base
-    expect_true(ncol(voxel_output) == 4)  # u, v, w, N columns
-    expect_true(all(voxel_output$N >= case$th))  # threshold rispettato
-    expect_true(all(voxel_output$u >= 1))  # indici voxel partono da 1
-    expect_true(all(voxel_output$v >= 1))
-    expect_true(all(voxel_output$w >= 1))
-
+    expect_true(ncol(voxel_output) == 4, "Il file voxel dovrebbe avere 4 colonne: u, v, w, N.")
+    expect_true(all(voxel_output$N >= case$th), "Il numero di punti per voxel non rispetta la soglia.")
+    expect_true(all(voxel_output$u >= 1), "I valori u dei voxel dovrebbero partire da 1.")
+    expect_true(all(voxel_output$v >= 1), "I valori v dei voxel dovrebbero partire da 1.")
+    expect_true(all(voxel_output$w >= 1), "I valori w dei voxel dovrebbero partire da 1.")
   }
 
 
