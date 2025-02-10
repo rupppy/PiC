@@ -53,31 +53,31 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
     dir.create(output_path, recursive = TRUE)
   }
 
-  tic('Forest Floor segmentation')
+
 
   colnames(a)<-c('x', 'y', 'z')
 
   # voxelizzo, tabella di corrispomdenza punto/voxel con passo dim, un record per ciascun punto
-  tic('AAVox')
+
   AAvox <- data.frame(a$x, a$y, a$z, as.integer(a$x / soil_dim) + 1, as.integer(a$y / soil_dim) + 1, as.integer(a$z / soil_dim) + 1)
   colnames(AAvox) <- c('x', 'y', 'z', 'u', 'v', 'w')
-  toc()
+
 
   # aggrego i punti per voxel
-  tic('AAvox1')
+
   AAvox1 <- data.frame(AAvox %>% fcount(u, v, w))
-  toc()
+
 
   # seleziono i voxel con un minimo di punti th
-  tic('AAvoxels')
+
   AAvoxels <- (AAvox1[AAvox1["N"] >= th, ])
-  toc()
+
 
   # seleziono i voxel minimi di ciascuna coppia di x e y
-  tic('voxel_minimi')
+
   voxel_minimi <- aggregate(w ~ u + v, AAvoxels, min)
   colnames(voxel_minimi) <- c("u", "v", "wmin")
-  toc()
+
 
   # porto in un piano w=0 tutte le colonne xy
   #a ciascuna coppia xy della tabella completa associo la w del voxel più basso della stessa coppia
@@ -91,7 +91,6 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   Forest_floor0 <- na.omit(Forest_floor0)  # Rimuovi eventuali valori NA
   
 
-  tic('dbscan')
   Forest_floor00<-data.frame(Forest_floor0$u, Forest_floor0$v, Forest_floor0$w)
   bf <- dbscan(Forest_floor00, eps = 1, minPts = 3)
   y1f <- cbind(Forest_floor00, bf$cluster)
@@ -100,21 +99,21 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   good_cluster<-nc[nc['N']> 400 & nc['cls']!=0,]
   y2f<-inner_join(y1f,good_cluster)
   colnames(y2f)<-c('u', 'v', 'w', 'cls', 'N')
-  toc()
 
-  tic('Forest_floor1')
+
+
   Forest_floor1<-inner_join(AAvox,y2f)
-  toc()
 
-  tic('Forest_foor')
+
+
   Forest_floor<-data.frame(Forest_floor1$x, Forest_floor1$y, Forest_floor1$z)
   colnames(Forest_floor)<-c('x','y','z')
   fwrite(Forest_floor, file.path(output_path, paste0(filename, '_Forest_floor_eps', eps, '_mpts', mpts, '.txt')))
   
-  cat("File scritto in:", file.path(output_path, paste0(filename, '_Forest_floor_eps', eps, '_mpts', mpts, '.txt')), "\n")
-  toc()
+  message("File scritto in:", file.path(output_path, paste0(filename, '_Forest_floor_eps', eps, '_mpts', mpts, '.txt')), "\n")
 
-  tic('AGB0')
+
+
   AGB0<-p1[p1['w0'] >1,]
   ant<-anti_join(Forest_floor0,y2f)
 
@@ -125,13 +124,11 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   AGB2<-inner_join(AAvox,AGB1)
   AGB<-data.frame(AGB2['x'], AGB2['y'], AGB2['z'])
   AGB2<-NULL
-  toc()
-
 
 
   ############
   ############
-  tic('Voxelizing time')
+
 
   u<-NULL
   v<-NULL
@@ -163,17 +160,17 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   if (Vox_print) {
     fwrite(AAvoxels, file.path(output_path, paste0(plot, "_vox.txt")), row.names = FALSE)
     
-    cat("File scritto in:", file.path(output_path, paste0(filename, '_vox.txt')), "\n")
+    message("File scritto in:", file.path(output_path, paste0(filename, '_vox.txt')), "\n")
   }
 
-  toc()
+
 
   ###############
   ###############
   ###############
   # Wood segmentation
 
-  tic('Wood segmentation time')
+
 
   agbw <- data.frame(AAvoxels$u, AAvoxels$v, AAvoxels$w)
   colnames(agbw) <- c("u", "v", "w")
@@ -220,7 +217,7 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   if(WoodVox_print) {
     fwrite(cluster, file.path(output_path, paste0(plot,'_WoodVox_eps', eps, '_mpts', mpts, '.txt')))
     
-    cat("File scritto in:", file.path(output_path, paste0(filename, '_WoodVox_eps', eps, '_mpts', mpts, '.txt')), "\n")
+    message("File scritto in:", file.path(output_path, paste0(filename, '_WoodVox_eps', eps, '_mpts', mpts, '.txt')), "\n")
   }
 
   woodpoint0<-inner_join(AAvox, cluster)
@@ -228,16 +225,15 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
   woodpoint0=NULL
   fwrite(woodpoint, file.path(output_path, paste0(plot, "_Wood_eps", eps, "_mpts", mpts, ".txt")), row.names = FALSE)
   
-  cat("File scritto in:", file.path(output_path, paste0(filename, "_Wood_eps", eps, "_mpts", mpts, ".txt")), "\n")
+  message("File scritto in:", file.path(output_path, paste0(filename, "_Wood_eps", eps, "_mpts", mpts, ".txt")), "\n")
 
-  toc()
+
   ###########
   ## Generating AGB without wood
 
   # Parametri
   voxel_size <- 0.2  #  metri
 
-  tic('wood removal with larger voxels')
 
   # Funzione per creare voxel più grandi
 
@@ -276,8 +272,8 @@ Forest_seg <- function(a, filename="XXX", dimVox = 2, th = 2,
 
   fwrite(AGB_def, file.path(output_path, paste0(plot, "_AGBnoWOOD_eps", eps, "_mpts", mpts, ".txt")), row.names = FALSE)
   
-  cat("File scritto in:", file.path(output_path, paste0(filename, "_AGBnoWOOD_eps", eps, "_mpts", mpts, ".txt")), "\n")
-  toc()
+  message("File scritto in:", file.path(output_path, paste0(filename, "_AGBnoWOOD_eps", eps, "_mpts", mpts, ".txt")), "\n")
+
 
   toc()
 }

@@ -80,7 +80,7 @@ Woodseg <- function(a, filename = "XXX", eps = 1, mpts = 4,
     fwrite(cluster, output_file, append = TRUE, row.names = FALSE)
     
     # Messaggio di debug
-    cat("File scritto in:", output_file, "\n")
+    message("File scritto in:", output_file, "\n")
     }
   toc()
 }

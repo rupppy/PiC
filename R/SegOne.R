@@ -36,7 +36,6 @@ SegOne <- function(a, filename = "Elab_single_tree", dimVox = 2,
                    output_path = tempdir()) {
 
   tic('Total time')
-  tic('Voxelizing time')
 
   ########
 
@@ -99,12 +98,12 @@ SegOne <- function(a, filename = "Elab_single_tree", dimVox = 2,
   if(is.null(AAvoxels)) {print ('No wood cluster generated, might change values of dimVox and th')}
 
 
-  toc()
+
 
 
 # Wood voxels segmentation
 
-  tic('Wood segmentation time')
+
   ###############
   # Wood segmentation
   #colnames(a) <- c("u", "v", "w")
@@ -148,12 +147,12 @@ SegOne <- function(a, filename = "Elab_single_tree", dimVox = 2,
 
 
   woodPoints0<-suppressMessages(inner_join(AAvoxRAW, cluster0))
-  toc()
+
 
 
   leafPoints0<-suppressMessages(anti_join(AAvoxRAW, cluster0))
 
-  tic('time cleaning spourious point in leaf cluster')
+
 
   a<-data.frame(leafPoints0['x'], leafPoints0['y'], leafPoints0['z'])
 
@@ -169,9 +168,9 @@ SegOne <- function(a, filename = "Elab_single_tree", dimVox = 2,
   clusterquote<- data.frame(sliceLeaf %>% fcount(nr))
   cutoff<-clusterquote[clusterquote['N']>200,]
   leafon<-suppressMessages(inner_join(sliceLeaf,cutoff))
-  toc()
 
-  tic('Writing points')
+
+
   woodPoints<-data.frame(woodPoints0$x, woodPoints0$y, woodPoints0$z)
   colnames(woodPoints)<-c("x", "y", "z")
   leafPoints<-data.frame(leafon$x, leafon$y, leafon$z)
@@ -180,10 +179,10 @@ SegOne <- function(a, filename = "Elab_single_tree", dimVox = 2,
   fwrite(woodPoints, file.path(output_path, paste0(filename,'_DBSCAN_wood.txt')))
   fwrite(leafPoints, file.path(output_path, paste0(filename,'_DBSCAN_leaf.txt')))
   
-  cat("File di legno scritto in:", file.path(output_path, paste0(filename, '_DBSCAN_wood.txt')), "\n")
-  cat("File di foglie scritto in:", file.path(output_path, paste0(filename, '_DBSCAN_leaf.txt')), "\n")
+  message("File di legno scritto in:", file.path(output_path, paste0(filename, '_DBSCAN_wood.txt')), "\n")
+  message("File di foglie scritto in:", file.path(output_path, paste0(filename, '_DBSCAN_leaf.txt')), "\n")
   
-  toc()
+
   toc()
 }
 
