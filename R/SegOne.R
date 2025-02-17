@@ -95,7 +95,7 @@ SegOne <- function(a, filename = "Elab_single_tree", dimVox = 2,
 
   # crea una tabella con i soli voxel che contengono un numeri di punti superiore a th
   AAvoxels <- (AAvox1[AAvox1["N"] >= th, ])
-  if(is.null(AAvoxels)) {print ('No wood cluster generated, might change values of dimVox and th')}
+  if(is.null(AAvoxels)) {message ('No wood cluster generated, might change values of dimVox and th')}
 
 
 

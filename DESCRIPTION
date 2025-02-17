@@ -1,7 +1,7 @@
 Type: Package
 Package: PiC
 Title: Pointcloud Interactive Computation for Forest Structure Analysis
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: c(
     person("Roberto", "Ferrara", , "roberto.ferrara@cnr.it", role = c("aut", "cre"), comment = c(ORCID = "0009-0000-3627-6867")),
     person("Stefano", "Arrizza", role = "aut")
@@ -13,7 +13,7 @@ Description: Provides advanced algorithms for analyzing pointcloud data in
     efficient processing of large-scale forest pointcloud data, offering
     insights into forest structure, connectivity, and fire risk
     assessment. Algorithms to analyze pointcloud data (.xyz input file).
-    For more details, see <https://hdl.handle.net/20.500.14243/533471>.
+    For more details, see Ferrara & Arrizza (2025) <https://hdl.handle.net/20.500.14243/533471>.
     For single tree segmentation details, see Ferrara et al. (2018) 
     <doi:10.1016/j.agrformet.2018.04.008>.
 License: GPL (>= 3)
