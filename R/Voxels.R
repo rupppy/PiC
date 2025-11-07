@@ -62,18 +62,18 @@ Voxels <- function(a, filename = "XXX", dimVox = 2, th = 2, output_path = tempdi
     CC <- data.frame(BB["x"], BB["y"], BB["z"] - abs(zmin))
   }
 
-  # crea la tabella un voxel per ogni punto (con doppioni)
+  # create the table one voxel for each point (with duplicates)
   AAvox <- data.frame(as.integer(CC$x / dim) + 1, as.integer(CC$y / dim) + 1, as.integer(CC$z / dim) + 1)
   colnames(AAvox) <- c("u", "v", "w")
 
-  # crea una tabella di corrispondenza voxel/punto
-  AAvoxRAW<-data.frame(CC$x,CC$y,CC$z, AAvox$u,AAvox$v,AAvox$w)
-  fwrite(AAvoxRAW, file.path(output_path, paste0(plot,'_vox_raw.txt')), row.names = FALSE)
+  # create a voxel/point correspondence table
+  # AAvoxRAW<-data.frame(CC$x,CC$y,CC$z, AAvox$u,AAvox$v,AAvox$w)
+  # fwrite(AAvoxRAW, file.path(output_path, paste0(plot,'_vox_raw.txt')), row.names = FALSE)
 
-  # crea la nuvola di voxel, con valori univoci e quarta colonna col numero di punti per voxel
+  # Creates the voxel cloud, with unique values and a fourth column with the number of points per voxel
   AAvox1 <- data.frame(AAvox %>% fcount(u, v, w))
 
-  # crea una tabella con i soli voxel che contengono un numeri di punti superiore a th
+  # create a table with only the voxels that contain a number of points greater than th
   AAvoxels <- (AAvox1[AAvox1["N"] >= th, ])
   if(is.null(AAvoxels))
   { stop('No wood cluster generated, might deacrese th value')}

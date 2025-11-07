@@ -78,10 +78,10 @@ test_that("Voxels funziona correttamente con dati forestali", {
 
     # Verifica l'esistenza dei file di output
     voxel_file <- file.path(temp_path, paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox.txt"))
-    voxel_raw_file <- file.path(temp_path, paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox_raw.txt"))
+    # voxel_raw_file <- file.path(temp_path, paste0("test_voxels_dim", case$dimVox, "_th", case$th, "_vox_raw.txt"))
     
     expect_true(file.exists(voxel_file), paste("File voxel non trovato:", voxel_file))
-    expect_true(file.exists(voxel_raw_file), paste("File voxel RAW non trovato:", voxel_raw_file))
+    # expect_true(file.exists(voxel_raw_file), paste("File voxel RAW non trovato:", voxel_raw_file))
     
     # Leggi il file di output
     voxel_output <- fread(voxel_file)

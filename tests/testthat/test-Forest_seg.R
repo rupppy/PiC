@@ -101,7 +101,7 @@ test_that("Forest_seg funziona correttamente con una scena forestale realistica"
   
   # Verifica output files
   wood_file <- file.path(temp_path, "test_forest_dim3_th1_Wood_eps2_mpts6.txt")
-  floor_file <- file.path(temp_path, "test_forest_Forest_floor_eps2_mpts6.txt")
+  floor_file <- file.path(temp_path, "test_forest_dim3_th1_Forest_floor_soil_dim_0.1.txt")
   agb_no_wood_file <- file.path(temp_path, "test_forest_dim3_th1_AGBnoWOOD_eps2_mpts6.txt")
   
   expect_true(file.exists(wood_file), "File Wood non trovato")

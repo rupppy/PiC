@@ -4,43 +4,64 @@
 \alias{Forest_seg}
 \title{Forest component segmentation}
 \usage{
-Forest_seg (a, filename="XXX", dimVox = 2, th = 2,
-eps = 2, mpts = 6, h_tree = 1, soil_dim= 0.3,
-N = 500, R = 30, Vox_print = FALSE, WoodVox_print = FALSE, output_path = tempdir())
+Forest_seg(
+  a,
+  filename = "XXX",
+  dimVox = 2,
+  th = 2,
+  eps = 2,
+  mpts = 9,
+  h_tree = 1,
+  soil_dim = 0.1,
+  N = 500,
+  R = 30,
+  Vox_print = FALSE,
+  WoodVox_print = FALSE,
+  output_path = tempdir(),
+  analyze_canopy = TRUE,
+  canopy_voxel_size = 0.1,
+  min_canopy_height = 1.5,
+  coverage_method = "mean_normalized"
+)
 }
 \arguments{
-\item{a}{- Input file (.xyz)}
+\item{a}{Input point cloud data frame (.xyz) or file path}
 
-\item{filename}{- Output file prefix}
+\item{filename}{Output file prefix}
 
-\item{dimVox}{- Voxel dimension (cm) - Default = 2}
+\item{dimVox}{Voxel dimension (cm) for wood segmentation (default = 2)}
 
-\item{th}{- Minimum number of point to generate a voxel. Default = 2}
+\item{th}{Minimum number of points to generate a voxel (default = 2)}
 
-\item{eps}{- size (radius) of the epsilon neighborhood - Default = 1}
+\item{eps}{Epsilon neighborhood radius for DBSCAN (default = 2)}
 
-\item{mpts}{- number of minimum points required in the eps neighborhood for core points (including the point itself) - Default = 4}
+\item{mpts}{Minimum points required in eps neighborhood for core points (default = 9)}
 
-\item{h_tree}{- minumum trunk lenght (m)}
+\item{h_tree}{Minimum trunk length in meters (default = 1)}
 
-\item{soil_dim}{- Voxel dimension (m) for forest floor segmentation - Default = 0.30}
+\item{soil_dim}{Voxel dimension (m) for forest floor segmentation (default = 0.1)}
 
-\item{N}{- Minimum number of voxel in a wood cluster - Default = 1000}
+\item{N}{Minimum number of voxels in a wood cluster (default = 500)}
 
-\item{R}{- R = Standard deviation * Proportion of Variance - Default = 30}
+\item{R}{Cluster shape parameter threshold (default = 30)}
 
-\item{Vox_print}{- Print point cloud voxelization. Default FALSE}
+\item{Vox_print}{Logical; if TRUE, saves point cloud voxelization (default = FALSE)}
 
-\item{WoodVox_print}{- Print wood voxelization}
+\item{WoodVox_print}{Logical; if TRUE, saves wood voxelization (default = FALSE)}
 
-\item{output_path}{Directory in cui scrivere i file di output. Default = tempdir()}
+\item{output_path}{Output directory (default = tempdir())}
+
+\item{analyze_canopy}{Logical; if TRUE, performs canopy analysis (default = TRUE)}
+
+\item{canopy_voxel_size}{Voxel size for canopy analysis in meters (default = 0.1)}
+
+\item{min_canopy_height}{Minimum height threshold for canopy analysis (default = 1.5)}
+
+\item{coverage_method}{Method for calculating coverage degree (default = "mean_normalized")}
 }
 \value{
-6 files (.txt) output. 1. Voxelized pointcloud. 2. Forest floor (vox). 3. AGB (vox) 4. DTM. 5. Wood (vox) 6. AGB no wood
+List containing file paths and metrics for trees and canopy.
 }
 \description{
-Segments the input .xyz pointcloud file into different forestry layers.
-}
-\details{
-Whole pointcloud segmentation process
+Segments an input .xyz point cloud file into different forestry layers (soil, wood, foliage), computes individual tree metrics, and provides summary statistics and canopy metrics.
 }
