@@ -1,0 +1,13 @@
+.sidebar-menu {
+  padding: 15px;
+}
+
+.btn-block {
+  margin: 10px 0;
+  width: 100%;
+}
+
+#path_info {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
