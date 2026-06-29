@@ -13,7 +13,7 @@ NULL
 #'
 #' @description
 #' The PiC package provides advanced algorithms for analyzing forest point cloud 
-#' data acquired through terrestrial laser scanning (TLS). Key features include 
+#' data acquired through ground-based laser scanning (TLS). Key features include 
 #' fast voxelization of large datasets, automatic segmentation into forest components 
 #' (ground, wood, foliage), extraction of individual tree metrics, and canopy 
 #' structure analysis.
@@ -48,7 +48,7 @@ NULL
 #' A typical workflow with PiC includes:
 #' 
 #' \enumerate{
-#'   \item Load the point cloud (format .xyz, .txt, or .csv)
+#'   \item Load the point cloud (format .xyz, .txt, .csv, .las, or .laz)
 #'   \item Execute segmentation with \code{\link{Forest_seg}} or specific functions
 #'   \item Analyze resulting metrics (tree-level and plot-level)
 #'   \item Visualize results with the Shiny interface (\code{\link{run_PiC}})
@@ -99,14 +99,14 @@ NULL
 #'     \item \code{y}: Y coordinate (meters)
 #'     \item \code{z}: Z coordinate or height (meters)
 #'   }
-#'   Supported formats: .xyz, .txt, .csv, .asc
+#'   Supported formats: .xyz, .txt, .csv, .asc, .las, .laz
 #' }
 #' 
 #' \subsection{Data Quality}{
 #'   For optimal results:
 #'   \itemize{
-#'     \item Minimum density: ~1000 points/m²
-#'     \item Multiple scans (360°) to reduce occlusions
+#'     \item Minimum density: ~1000 points/m^2
+#'     \item Multiple scans (360 degrees) to reduce occlusions
 #'     \item Pre-processing: noise removal, scan registration
 #'     \item Georeferencing (optional)
 #'   }
@@ -223,7 +223,7 @@ NULL
 #' The interactive Shiny interface (\code{\link{run_PiC}}) offers:
 #' 
 #' \itemize{
-#'   \item \strong{File Upload}: Supports .txt, .xyz, .csv up to 100GB
+#'   \item \strong{File Upload}: Supports .txt, .xyz, .csv, .las, .laz up to 100GB
 #'   \item \strong{Parameter Configuration}: Sliders and inputs for all parameters
 #'   \item \strong{Output Directory Selection}: Choose save directory
 #'   \item \strong{Real-time Progress}: Progress bar during analysis

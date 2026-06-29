@@ -5,12 +5,23 @@
 #'   forest point cloud data. The app requires additional packages that are not
 #'   installed by default. If these packages are missing, you will be prompted
 #'   to install them.
+#'   
+#'   To stop the server completely:
+#'   - Use the "Exit Application" button (cleanest method)
+#'   - Or press Ctrl+C in the R console / click Stop in RStudio
+#'   
+#'   Note: Simply closing the browser tab will disconnect the interface but 
+#'   the server will continue running in R until you stop it.
+#'   
 #' @return No return value, called for side effects (launches Shiny app)
 #' @export
 #' @examples
 #' \dontrun{
 #' # Launch the interactive app
 #' run_PiC()
+#' 
+#' # To stop the server: click "Exit Application" button
+#' # Or: press Ctrl+C / click Stop button in RStudio
 #' }
 run_PiC <- function() {
   
@@ -59,7 +70,35 @@ run_PiC <- function() {
     stop("App directory not found. Please reinstall the package.", call. = FALSE)
   }
   
-  # Launch the app
-  message("Launching PiC Shiny app...")
-  shiny::runApp(app_dir, display.mode = "normal", launch.browser = TRUE)
+  # Launch the app with clear exit instructions
+  message("\n========================================")
+  message("  PiC - Pointcloud Interactive App")
+  message("========================================\n")
+  message("Launching application...")
+  message("\n !! Note: Closing browser tab only disconnects the")
+  message("          interface - the server keeps running!")
+  message("\nStarting server...\n")
+  
+  tryCatch({
+    shiny::runApp(app_dir, display.mode = "normal", launch.browser = TRUE)
+  }, interrupt = function(e) {
+    message("\n========================================")
+    message("  PiC app stopped by user")
+    message("========================================\n")
+  }, error = function(e) {
+    # Filter out expected shutdown messages
+    msg <- as.character(e$message)
+    if (!grepl("connection.*closed|session.*ended|unexpected end of input", msg, ignore.case = TRUE)) {
+      message("\nApp error: ", msg)
+    } else {
+      message("\n========================================")
+      message("  PiC app session ended")
+      message("========================================\n")
+    }
+  }, finally = {
+    # Clean exit message
+    invisible(NULL)
+  })
+  
+  invisible(NULL)
 }

@@ -4,9 +4,9 @@
 \name{PiC-package}
 \alias{PiC}
 \alias{PiC-package}
-\title{PiC: Pointcloud Interactive Computation}
+\title{PiC: Interactive Processing and Segmentation of Forest TLS Point-Cloud Data}
 \description{
-Provides advanced algorithms for analyzing pointcloud data from terrestrial laser scanner in forestry applications. Key features include fast voxelization of large datasets; segmentation of point clouds into forest floor, understorey, canopy, and wood components. The package enables efficient processing of large-scale forest pointcloud data, offering insights into forest structure, connectivity, and fire risk assessment. Algorithms to analyze pointcloud data (.xyz input file). For more details, see Ferrara & Arrizza (2025) \url{https://hdl.handle.net/20.500.14243/533471}. For single tree segmentation details, see Ferrara et al. (2018) \doi{10.1016/j.agrformet.2018.04.008}.
+Tools for the processing, segmentation, and analysis of terrestrial laser scanning (TLS and MLS) forest point-cloud data. The package provides fast voxel-based processing, classification of point clouds into forest floor, understory, canopy, and woody components, and algorithms for single-tree analysis and structural characterization. Methods are designed to handle large and dense point-cloud datasets efficiently, supporting applications in forest structure assessment, connectivity analysis, and fire-risk evaluation. Input data are provided as '.xyz', '.txt', '.las', or '.laz' point-cloud files. For methodological details, see Ferrara and Arrizza (2025) \url{https://hdl.handle.net/20.500.14243/533471} and Ferrara et al. (2018) \doi{10.1016/j.agrformet.2018.04.008}.
 }
 \seealso{
 Useful links:
@@ -21,7 +21,7 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Stefano Arrizza (\href{https://orcid.org/0009-0009-2290-3650}{ORCID}) [contributor]
+  \item Stefano Arrizza \email{stefano.arrizza@cnr.it} (\href{https://orcid.org/0009-0009-2290-3650}{ORCID}) [contributor]
 }
 
 }

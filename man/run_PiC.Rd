@@ -17,10 +17,20 @@ This function launches an interactive web application for analyzing
   forest point cloud data. The app requires additional packages that are not
   installed by default. If these packages are missing, you will be prompted
   to install them.
+  
+  To stop the server completely:
+  - Use the "Exit Application" button (cleanest method)
+  - Or press Ctrl+C in the R console / click Stop in RStudio
+  
+  Note: Simply closing the browser tab will disconnect the interface but 
+  the server will continue running in R until you stop it.
 }
 \examples{
 \dontrun{
 # Launch the interactive app
 run_PiC()
+
+# To stop the server: click "Exit Application" button
+# Or: press Ctrl+C / click Stop button in RStudio
 }
 }
