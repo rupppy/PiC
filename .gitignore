@@ -11,3 +11,8 @@ inst/doc
 src/*.o
 src/*.so
 src/*.dll
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+docs/

@@ -1,0 +1,52 @@
+url: https://rupppy.github.io/PiC/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+home:
+  title: "PiC – Pointcloud Interactive Computation"
+  description: >
+    R package for processing, segmentation and analysis of forest TLS/MLS
+    point clouds (CNR-IBE).
+  links:
+  - text: PiC on CRAN
+    href: https://cran.r-project.org/package=PiC
+  - text: CNR-IBE
+    href: https://www.ibe.cnr.it
+
+navbar:
+  structure:
+    left:  [intro, reference, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github
+      href: https://github.com/rupppy/PiC
+      aria-label: GitHub
+
+reference:
+- title: "Complete pipeline"
+  desc: "End-to-end forest segmentation and metrics extraction."
+  contents:
+  - Forest_seg
+  - pic_analyze_cloud
+  - metrics_from_las
+- title: "Segmentation components"
+  desc: "Individual segmentation steps."
+  contents:
+  - Floseg
+  - SegOne
+  - Voxels
+- title: "Interactive interface"
+  contents:
+  - run_PiC
+- title: "Package"
+  contents:
+  - PiC-package
+
+authors:
+  Roberto Ferrara:
+    href: https://orcid.org/0009-0000-3627-6867
+  Stefano Arrizza:
+    href: https://orcid.org/0009-0009-2290-3650

@@ -1,6 +1,20 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^README\.Rmd$
-^^README\.Rmd$$
-^^README\.md$$
-^CRAN-SUBMISSION$
+^cran-comments\.md$
+^\.claude$
+^DAV_GAB_OPTIMIZATION\.md$
+^OPTIMIZATION_REPORT\.md$
+^PERFORMANCE_ANALYSIS\.md$
+^test_gab_v304\.R$
+^\.positai$
+^\.RData$
+^\.Rhistory$
+^\.DS_Store$
+.*\.DS_Store$
+^tests/testthat/output_path$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^README_3\.3\.1\.md$
+^DESCRIPTION copia$
