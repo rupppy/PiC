@@ -1,0 +1,25 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rupppy.github.io/PiC/404.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/authors.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/index.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/news/index.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/Floseg.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/Forest_seg.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/PiC-package.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/SegOne.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/Voxels.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/analyze_forest_canopy.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/calculate_coverage_degree.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/calculate_crown_base_heights.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/calculate_dbh.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/calculate_vertical_profile.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/extract_forest_floor.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/filter_trees_by_point_count.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/index.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/metrics_from_las.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/pic_analyze_cloud.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/run_PiC.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/segment_wood.html</loc></url>
+<url><loc>https://rupppy.github.io/PiC/reference/separate_foliage.html</loc></url>
+</urlset>
+
